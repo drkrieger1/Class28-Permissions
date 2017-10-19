@@ -37,9 +37,9 @@
 
 
 ### Rubric
-- 3pts: Site contians all of the required pages specified above.
+- 2pts: Site contians all of the required pages specified above.
 - 2pts: New role registration page & regular member registration page. Login Page redirect appropriately. 
 - 2pts: Use of [AllowAnonymous] & [Authorize] used appropriatly
 - 2pts: Claims correctly configured, and at least one policy configured and used
-- 1pts: Readme included with answers to questions
+- 2pts: Readme included with answers to questions
 
