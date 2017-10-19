@@ -41,5 +41,5 @@
 - 2pts: New role registration page & regular member registration page. Login Page redirect appropriately. 
 - 2pts: Use of [AllowAnonymous] & [Authorize] used appropriatly
 - 2pts: Claims correctly configured, and at least one policy configured and used
-- 2pts: Readme included with answers to questions
+- 1pts: Readme included with answers to questions
 
