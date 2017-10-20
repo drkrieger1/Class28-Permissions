@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Lab28Erik.Models;
+using Lab28Erik.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Lab28Erik
 {
@@ -29,6 +31,13 @@ namespace Lab28Erik
 
             services.AddDbContext<Lab28ErikContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Lab28ErikContext")));
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("Lab28ErikContext")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
