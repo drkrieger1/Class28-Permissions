@@ -42,6 +42,8 @@ namespace Lab28Erik.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+                ModelState.AddModelError("Password", result.Errors.ToList()[0]);
+
             }
 
             return View();
