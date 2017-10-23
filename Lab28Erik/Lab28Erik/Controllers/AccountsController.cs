@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Lab28Erik.Controllers
@@ -36,8 +37,12 @@ namespace Lab28Erik.Controllers
                 var user = new ApplicationUser { UserName = rvm.Email, Email = rvm.Email };
                 var result = await _userManager.CreateAsync(user, rvm.Password);
 
+
                 if (result.Succeeded)
                 {
+                    Claim User = new Claim(ClaimTypes.Role, "RegisteredUser", ClaimValueTypes.String);
+                    await _userManager.AddClaimAsync(user, User);
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home");
@@ -71,6 +76,42 @@ namespace Lab28Erik.Controllers
             ModelState.AddModelError("", error);
             return View();
         }
+
+        [HttpGet]
+        public IActionResult AdminRegister(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdminRegister(RegisterViewModel rvm, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = rvm.Email, Email = rvm.Email };
+                var result = await _userManager.CreateAsync(user, rvm.Password);
+
+                if (result.Succeeded)
+                {
+                    Claim admin = new Claim(ClaimTypes.Role, "Administrator", ClaimValueTypes.String);
+                    var AddClaim = await _userManager.AddClaimAsync(user, admin);
+
+                    if (AddClaim.Succeeded)
+                    {
+                         await _signInManager.SignInAsync(user, isPersistent: false);
+
+                         return RedirectToAction("Index", "Home");
+                    }
+                }
+                //ModelState.AddModelError("Password", result.Errors.ToList()[0]);
+
+            }
+
+            return View();
+        }
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
