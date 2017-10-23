@@ -85,7 +85,7 @@ namespace Lab28Erik.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdminRegister(RegisterViewModel rvm, string returnUrl = null)
+        public async Task<IActionResult> AdminRegister(AdminRegisterViewModel rvm, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -109,6 +109,29 @@ namespace Lab28Erik.Controllers
 
             }
 
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AdminLogIn()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdminLogIn(AdminLogInViewModel lvm)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(lvm.Email, lvm.Password, lvm.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            string error = "you are wrong";
+            ModelState.AddModelError("", error);
             return View();
         }
 
