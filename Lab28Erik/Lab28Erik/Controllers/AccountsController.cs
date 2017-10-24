@@ -79,7 +79,7 @@ namespace Lab28Erik.Controllers
             ModelState.AddModelError("", error);
             return View();
         }
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
         public IActionResult AdminRegister(string returnUrl = null)
         {
@@ -151,6 +151,12 @@ namespace Lab28Erik.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
     
