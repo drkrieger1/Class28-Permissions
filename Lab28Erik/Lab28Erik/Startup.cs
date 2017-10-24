@@ -30,10 +30,10 @@ namespace Lab28Erik
             services.AddMvc();
 
             services.AddAuthorization(options =>
-            options.AddPolicy("Admin Only", policy => policy.RequireRole("Administrator")));
+            options.AddPolicy("Admin Only", policy => policy.RequireClaim("Administrator")));
 
             services.AddAuthorization(options =>
-            options.AddPolicy("Registered User", policy => policy.RequireRole("RegisteredUser")));
+            options.AddPolicy("Registered User", policy => policy.RequireClaim("RegisteredUser")));
 
             services.AddDbContext<Lab28ErikContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Lab28ErikContext")));

@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lab28Erik.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lab28Erik.Controllers
 {
+    [Authorize(Policy = "Admin only")]
     public class ProductsController : Controller
     {
         private readonly Lab28ErikContext _context;
@@ -19,12 +21,15 @@ namespace Lab28Erik.Controllers
         }
 
         // GET: Products
+        [Authorize(Policy = "Registered User")]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Product.ToListAsync());
         }
 
         // GET: Products/Details/5
+        [Authorize(Policy = "Registered User")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

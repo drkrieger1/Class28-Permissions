@@ -1,4 +1,5 @@
 ﻿using Lab28Erik.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Lab28Erik.Controllers
 {
+    [Authorize(Policy = "Registered User")]
     public class AccountsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -20,7 +22,7 @@ namespace Lab28Erik.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register(string returnUrl = null)
         {
@@ -28,6 +30,7 @@ namespace Lab28Erik.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel rvm, string returnUrl = null)
         {
@@ -53,13 +56,13 @@ namespace Lab28Erik.Controllers
 
             return View();
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult LogIn()
         {
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> LogIn(LogInViewModel lvm)
         {
@@ -76,14 +79,14 @@ namespace Lab28Erik.Controllers
             ModelState.AddModelError("", error);
             return View();
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult AdminRegister(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> AdminRegister(AdminRegisterViewModel rvm, string returnUrl = null)
         {
@@ -111,13 +114,16 @@ namespace Lab28Erik.Controllers
 
             return View();
         }
-
+        //This loads the admin log in page.
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult AdminLogIn()
         {
             return View();
         }
 
+        //This will Post the user Admin credentials.
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> AdminLogIn(AdminLogInViewModel lvm)
         {
