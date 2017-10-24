@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Lab28Erik.Models;
 using Lab28Erik.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Lab28Erik
 {
@@ -27,7 +28,19 @@ namespace Lab28Erik
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie("MyCookieLogin", options =>
+                options.AccessDeniedPath = new PathString("/Accounts/Forbidden/"));
+
             services.AddMvc();
+
+
+
+            services.AddAuthorization(options =>
+            options.AddPolicy("Admin Only", policy => policy.RequireClaim("Administrator")));
+
+            services.AddAuthorization(options =>
+            options.AddPolicy("Registered User", policy => policy.RequireClaim("RegisteredUser")));
 
             services.AddDbContext<Lab28ErikContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Lab28ErikContext")));
